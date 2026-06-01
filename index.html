@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Singora by Abhinaw Singh</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+            <!-- BIGGER LOGO: size increased to 68x68px (formerly 44px) and more visual weight -->
+            <img src="logo.jpg" alt="Singora by Abhinaw Singh Logo" class="logo-img" onerror="this.onerror=null; this.style.display='none'; document.querySelector('.logo-icon-fallback').style.display='inline-block';">
+            <i class="fas fa-house-circle-check logo-icon-fallback" style="display: none; font-size: 2.4rem; color:#4f39f6;"></i>
+            <span>Singora by Abhinaw Singh</span>
+        </div>
+            
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Search products...">
+            </div>
+            
+            <div class="nav-icons">
+                <div class="nav-icon" onclick="toggleCart()">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cartCount" class="cart-badge">0</span>
+                </div>
+                <div class="nav-icon" onclick="toggleWishlist()">
+                    <i class="fas fa-heart"></i>
+                    <span id="wishlistCount" class="cart-badge">0</span>
+                </div>
+                <div class="nav-icon" id="userIcon" onclick="toggleUserMenu()">
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Categories Section -->
+    <div class="categories-bar">
+        <div class="categories-container">
+            <div class="category" data-category="all">
+                <i class="fas fa-th-large"></i>
+                <span>All</span>
+            </div>
+            <div class="category" data-category="Electronics">
+                <i class="fas fa-laptop"></i>
+                <span>Electronics</span>
+            </div>
+            <div class="category" data-category="Fashion">
+                <i class="fas fa-tshirt"></i>
+                <span>Fashion</span>
+            </div>
+            <div class="category" data-category="Home">
+                <i class="fas fa-home"></i>
+                <span>Home & Living</span>
+            </div>
+            <div class="category" data-category="Sports">
+                <i class="fas fa-futbol"></i>
+                <span>Sports</span>
+            </div>
+            <div class="category" data-category="Books">
+                <i class="fas fa-book"></i>
+                <span>Books</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Banner -->
+    <div class="hero-banner">
+        <div class="hero-content">
+            <h1>Summer Sale Extravaganza</h1>
+            <p>Up to 70% off on selected items</p>
+            <button class="shop-now-btn" onclick="filterByCategory('all')">Shop Now</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Sidebar Filters -->
+        <aside class="sidebar">
+            <div class="filter-section">
+                <h3><i class="fas fa-filter"></i> Filters</h3>
+                
+                <div class="filter-group">
+                    <h4>Price Range</h4>
+                    <div class="price-filter">
+                        <input type="range" id="priceRange" min="0" max="50000" step="1000" value="50000">
+                        <div class="price-values">
+                            <span>₹0</span>
+                            <span>₹<span id="priceValue">50000</span>+</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="filter-group">
+                    <h4>Rating</h4>
+                    <div class="rating-filter">
+                        <label><input type="checkbox" value="4"> ★★★★☆ & above</label>
+                        <label><input type="checkbox" value="3"> ★★★☆☆ & above</label>
+                        <label><input type="checkbox" value="2"> ★★☆☆☆ & above</label>
+                    </div>
+                </div>
+                
+                <div class="filter-group">
+                    <h4>Availability</h4>
+                    <label><input type="checkbox" id="inStockOnly"> In Stock Only</label>
+                </div>
+                
+                <button class="clear-filters" onclick="clearFilters()">Clear All Filters</button>
+            </div>
+        </aside>
+
+        <!-- Products Grid -->
+        <main class="products-main">
+            <div class="products-header">
+                <h2 id="categoryTitle">All Products</h2>
+                <div class="sort-options">
+                    <label>Sort by:</label>
+                    <select id="sortSelect">
+                        <option value="default">Default</option>
+                        <option value="priceLow">Price: Low to High</option>
+                        <option value="priceHigh">Price: High to Low</option>
+                        <option value="rating">Rating</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div id="productsContainer" class="products-grid"></div>
+            <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+                <i class="fas fa-spinner fa-spin"></i> Loading...
+            </div>
+        </main>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div id="cartSidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3><i class="fas fa-shopping-cart"></i> Your Cart</h3>
+            <button class="close-cart" onclick="toggleCart()">✕</button>
+        </div>
+        <div id="cartItems" class="cart-items"></div>
+        <div class="cart-footer">
+            <div class="cart-summary">
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span id="cartSubtotal">₹0</span>
+                </div>
+                <div class="summary-row">
+                    <span>Shipping:</span>
+                    <span id="shippingCost">Free</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total:</span>
+                    <span id="cartTotal">₹0</span>
+                </div>
+            </div>
+            <button id="checkoutBtn" class="checkout-btn" onclick="showCheckout()">
+                Proceed to Checkout
+            </button>
+        </div>
+    </div>
+
+    <!-- Wishlist Sidebar -->
+    <div id="wishlistSidebar" class="wishlist-sidebar">
+        <div class="cart-header">
+            <h3><i class="fas fa-heart"></i> Wishlist</h3>
+            <button class="close-cart" onclick="toggleWishlist()">✕</button>
+        </div>
+        <div id="wishlistItems" class="cart-items"></div>
+    </div>
+
+    <!-- User Menu -->
+    <div id="userMenu" class="user-menu">
+        <div class="user-info" id="userInfo">
+            <i class="fas fa-user-circle"></i>
+            <div>
+                <strong id="userName">Guest User</strong>
+                <p id="userEmail">guest@example.com</p>
+            </div>
+        </div>
+        <div class="menu-items">
+            <div class="menu-item" onclick="showOrders()">
+                <i class="fas fa-box"></i> My Orders
+            </div>
+            <div class="menu-item" onclick="showAddressBook()">
+                <i class="fas fa-map-marker-alt"></i> Address Book
+            </div>
+            <div class="menu-item" onclick="toggleLoginModal()">
+                <i class="fas fa-sign-in-alt"></i> Login / Sign Up
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div id="checkoutModal" class="modal">
+        <div class="modal-content modal-large">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Checkout</h2>
+            
+            <div class="checkout-container">
+                <div class="checkout-section">
+                    <h3>Shipping Information</h3>
+                    <form id="shippingForm">
+                        <input type="text" placeholder="Full Name" id="fullName" required>
+                        <input type="email" placeholder="Email Address" id="email" required>
+                        <input type="tel" placeholder="Phone Number" id="phone" required>
+                        <textarea placeholder="Complete Address" id="address" rows="3" required></textarea>
+                        <input type="text" placeholder="City" id="city" required>
+                        <input type="text" placeholder="Postal Code" id="postalCode" required>
+                    </form>
+                </div>
+                
+                <div class="checkout-section">
+                    <h3>Payment Method</h3>
+                    <div class="payment-methods">
+                        <label class="payment-option">
+                            <input type="radio" name="payment" value="credit" checked>
+                            <i class="fab fa-cc-visa"></i> Credit Card
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="payment" value="paypal">
+                            <i class="fab fa-paypal"></i> PayPal
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="payment" value="cod">
+                            <i class="fas fa-money-bill-wave"></i> Cash on Delivery
+                        </label>
+                    </div>
+                    
+                    <div id="creditCardFields" class="payment-fields">
+                        <input type="text" placeholder="Card Number" id="cardNumber">
+                        <div class="card-details">
+                            <input type="text" placeholder="MM/YY" id="cardExpiry">
+                            <input type="text" placeholder="CVV" id="cvv">
+                        </div>
+                    </div>
+                    
+                    <div id="paypalFields" class="payment-fields" style="display:none;">
+                        <input type="email" placeholder="PayPal Email" id="paypalEmail">
+                    </div>
+                    
+                    <h3>Order Summary</h3>
+                    <div id="checkoutSummary" class="checkout-summary"></div>
+                    
+                    <button class="confirm-order" onclick="placeOrder()">
+                        Place Order <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeLoginModal()">&times;</span>
+            <h2>Login / Sign Up</h2>
+            <div class="login-tabs">
+                <button class="tab-btn active" onclick="switchTab('login')">Login</button>
+                <button class="tab-btn" onclick="switchTab('signup')">Sign Up</button>
+            </div>
+            
+            <div id="loginForm" class="login-form active">
+                <input type="email" placeholder="Email" id="loginEmail">
+                <input type="password" placeholder="Password" id="loginPassword">
+                <button onclick="login()">Login</button>
+            </div>
+            
+            <div id="signupForm" class="login-form">
+                <input type="text" placeholder="Full Name" id="signupName">
+                <input type="email" placeholder="Email" id="signupEmail">
+                <input type="password" placeholder="Password" id="signupPassword">
+                <button onclick="signup()">Sign Up</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Orders Modal -->
+    <div id="ordersModal" class="modal">
+        <div class="modal-content modal-large">
+            <span class="close" onclick="closeOrdersModal()">&times;</span>
+            <h2>My Orders</h2>
+            <div id="ordersList" class="orders-list"></div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Singora by Abhinaw Singh</h3>
+                <p>Your premium e-commerce destination for quality products at unbeatable prices.</p>
+                <div class="social-icons">
+                    <i class="fab fa-facebook"></i>
+                    <i class="fab fa-twitter"></i>
+                    <i class="fab fa-instagram"></i>
+                    <i class="fab fa-youtube"></i>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li>About Us</li>
+                    <li>Contact Us</li>
+                    <li>FAQs</li>
+                    <li>Returns Policy</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Customer Service</h4>
+                <ul>
+                    <li>Track Order</li>
+                    <li>Shipping Info</li>
+                    <li>Terms & Conditions</li>
+                    <li>Privacy Policy</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Newsletter</h4>
+                <div class="newsletter">
+                    <input type="email" placeholder="Your email">
+                    <button>Subscribe</button>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Abhinaw Singh. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
