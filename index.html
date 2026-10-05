@@ -3,124 +3,246 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Singora</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Singora | Summer sale</title>
+    <meta name="description" content="Singora by Abhinaw Singh. Electronics, fashion, home and sports at summer sale prices.">
+    <meta name="theme-color" content="#561370">
+    <link rel="icon" href="logo.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="logo">
-            <!-- BIGGER LOGO: size increased to 68x68px (formerly 44px) and more visual weight -->
-            <img src="logo.jpg" alt="Singora by Abhinaw Singh Logo" class="logo-img" onerror="this.onerror=null; this.style.display='none'; document.querySelector('.logo-icon-fallback').style.display='inline-block';">
-            <i class="fas fa-house-circle-check logo-icon-fallback" style="display: none; font-size: 2.4rem; color:#4f39f6;"></i>
-            <span>Singora</span>
-        </div>
-            
-            <div class="search-bar">
-                <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Search products...">
-            </div>
-            
-            <div class="nav-icons">
-                <div class="nav-icon" onclick="toggleCart()">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span id="cartCount" class="cart-badge">0</span>
-                </div>
-                <div class="nav-icon" onclick="toggleWishlist()">
-                    <i class="fas fa-heart"></i>
-                    <span id="wishlistCount" class="cart-badge">0</span>
-                </div>
-                <div class="nav-icon" id="userIcon" onclick="toggleUserMenu()">
-                    <i class="fas fa-user"></i>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <a class="skip-link" href="#products">Skip to products</a>
 
-    <!-- Categories Section -->
-    <div class="categories-bar">
-        <div class="categories-container">
-            <div class="category" data-category="all">
-                <i class="fas fa-th-large"></i>
-                <span>All</span>
+    <!-- Sticky header: navigation + categories live in one sticky block -->
+    <header class="site-header" id="siteHeader">
+        <nav class="navbar" aria-label="Main">
+            <div class="nav-container">
+                <a class="logo" href="#top" aria-label="Singora home">
+                    <span class="logo-mark">
+                        <img src="logo.jpg" alt="" onerror="this.parentNode.classList.add('fallback')">
+                        <i class="fas fa-bag-shopping logo-fallback" aria-hidden="true"></i>
+                    </span>
+                    <span class="wordmark" aria-hidden="true">
+                        <span class="c-plum" style="--i:0">S</span><span class="c-plum" style="--i:1">i</span><span class="c-plum" style="--i:2">n</span><span class="c-pink" style="--i:3">g</span><span class="c-orange" style="--i:4">o</span><span class="c-orange" style="--i:5">r</span><span class="c-orange" style="--i:6">a</span>
+                    </span>
+                </a>
+
+                <div class="search-bar">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                    <input type="search" id="searchInput" placeholder="Search products" aria-label="Search products" autocomplete="off">
+                </div>
+
+                <div class="nav-icons">
+                    <button class="nav-icon" id="cartBtn" type="button" onclick="toggleCart()" aria-label="Open cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span id="cartCount" class="cart-badge">0</span>
+                    </button>
+                    <button class="nav-icon" id="wishlistBtn" type="button" onclick="toggleWishlist()" aria-label="Open wishlist">
+                        <i class="fas fa-heart"></i>
+                        <span id="wishlistCount" class="cart-badge">0</span>
+                    </button>
+                    <button class="nav-icon" id="userIcon" type="button" onclick="toggleUserMenu()" aria-label="Account menu">
+                        <i class="fas fa-user" id="userGlyph"></i>
+                    </button>
+                </div>
+
+                <!-- User Menu -->
+                <div id="userMenu" class="user-menu">
+                    <div class="user-info" id="userInfo">
+                        <i class="fas fa-user-circle"></i>
+                        <div>
+                            <strong id="userName">Guest User</strong>
+                            <p id="userEmail">guest@example.com</p>
+                        </div>
+                    </div>
+                    <div class="menu-items">
+                        <button type="button" class="menu-item" onclick="showOrders()">
+                            <i class="fas fa-box"></i> My Orders
+                        </button>
+                        <button type="button" class="menu-item" onclick="showAddressBook()">
+                            <i class="fas fa-map-marker-alt"></i> Address Book
+                        </button>
+                        <button type="button" class="menu-item" onclick="toggleLoginModal()">
+                            <i class="fas fa-sign-in-alt"></i> Login / Sign Up
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div class="category" data-category="Electronics">
-                <i class="fas fa-laptop"></i>
-                <span>Electronics</span>
-            </div>
-            <div class="category" data-category="Fashion">
-                <i class="fas fa-tshirt"></i>
-                <span>Fashion</span>
-            </div>
-            <div class="category" data-category="Home">
-                <i class="fas fa-home"></i>
-                <span>Home & Living</span>
-            </div>
-            <div class="category" data-category="Sports">
-                <i class="fas fa-futbol"></i>
-                <span>Sports</span>
-            </div>
-            <div class="category" data-category="Books">
-                <i class="fas fa-book"></i>
-                <span>Books</span>
+        </nav>
+
+        <div class="categories-bar">
+            <div class="categories-container" id="categoriesContainer">
+                <span class="cat-indicator" id="catIndicator" aria-hidden="true"></span>
+                <button type="button" class="category active" data-category="all">
+                    <i class="fas fa-th-large"></i>
+                    <span>All</span>
+                </button>
+                <button type="button" class="category" data-category="Electronics">
+                    <i class="fas fa-laptop"></i>
+                    <span>Electronics</span>
+                </button>
+                <button type="button" class="category" data-category="Fashion">
+                    <i class="fas fa-tshirt"></i>
+                    <span>Fashion</span>
+                </button>
+                <button type="button" class="category" data-category="Home">
+                    <i class="fas fa-home"></i>
+                    <span>Home &amp; Living</span>
+                </button>
+                <button type="button" class="category" data-category="Sports">
+                    <i class="fas fa-futbol"></i>
+                    <span>Sports</span>
+                </button>
+                <button type="button" class="category" data-category="Books">
+                    <i class="fas fa-book"></i>
+                    <span>Books</span>
+                </button>
             </div>
         </div>
-    </div>
+    </header>
 
-    <!-- Hero Banner -->
-    <div class="hero-banner">
-        <div class="hero-content">
-            <h1>Summer Sale </h1>
-            <p>Up to 70% off on selected items</p>
-            <button class="shop-now-btn" onclick="filterByCategory('all')">Shop Now</button>
+    <!-- Hero: the shopping bag fills up with the store's real products -->
+    <section class="hero" id="top">
+        <div class="hero-glow hero-glow-a" aria-hidden="true"></div>
+        <div class="hero-glow hero-glow-b" aria-hidden="true"></div>
+
+        <div class="hero-inner">
+            <div class="hero-copy">
+                <h1 class="hero-title">
+                    <span class="line"><span style="--d:0">Fill your bag.</span></span>
+                    <span class="line"><span style="--d:1">Pay up to 70% less.</span></span>
+                </h1>
+                <p class="hero-sub">Fifteen summer picks across electronics, fashion, home and sports. Orders of ₹1,000 or more ship free.</p>
+
+                <div class="hero-actions">
+                    <button type="button" class="shop-now-btn" onclick="shopNow()">
+                        <i class="fas fa-bag-shopping"></i> Shop the sale
+                    </button>
+                    <div class="countdown" role="timer" aria-label="Time left in the sale">
+                        <span class="cd-label">Sale ends in</span>
+                        <div class="cd-units">
+                            <div class="cd-unit"><b id="cdD">00</b><small>days</small></div>
+                            <div class="cd-unit"><b id="cdH">00</b><small>hrs</small></div>
+                            <div class="cd-unit"><b id="cdM">00</b><small>min</small></div>
+                            <div class="cd-unit"><b id="cdS">00</b><small>sec</small></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-stage" id="heroStage" aria-hidden="true">
+                <div class="bag-float">
+                    <div class="bag" id="heroBag">
+                        <!-- Back layer: inside of the bag, side panel, handle -->
+                        <svg class="bag-layer bag-back" viewBox="0 0 300 340">
+                            <defs>
+                                <linearGradient id="gSide" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0" stop-color="#6A1580"/>
+                                    <stop offset="1" stop-color="#43095C"/>
+                                </linearGradient>
+                            </defs>
+                            <path d="M52 92 L232 92 L272 70 L92 70 Z" fill="#2A0838"/>
+                            <path d="M232 92 L272 70 L272 298 L244 322 Z" fill="url(#gSide)"/>
+                            <path class="bag-handle" d="M120 80 C108 -6 216 -6 206 72" fill="none" stroke="#FF8A12" stroke-width="13" stroke-linecap="round"/>
+                        </svg>
+
+                        <div class="bag-items" id="bagItems"></div>
+
+                        <!-- Front layer: front face, S, swoosh -->
+                        <svg class="bag-layer bag-front" viewBox="0 0 300 340">
+                            <defs>
+                                <linearGradient id="gFront" x1="0" y1="0" x2="0.35" y2="1">
+                                    <stop offset="0" stop-color="#FFA10A"/>
+                                    <stop offset="0.55" stop-color="#FF6A12"/>
+                                    <stop offset="1" stop-color="#F51E6B"/>
+                                </linearGradient>
+                                <linearGradient id="gSwoosh" x1="0" y1="0" x2="1" y2="0">
+                                    <stop offset="0" stop-color="#F51E6B"/>
+                                    <stop offset="0.6" stop-color="#FF5A1A"/>
+                                    <stop offset="1" stop-color="#FFA10A"/>
+                                </linearGradient>
+                            </defs>
+                            <path d="M52 92 L232 92 L244 322 L40 322 Z" fill="url(#gFront)"/>
+                            <path d="M52 92 L232 92" stroke="rgba(255,255,255,.4)" stroke-width="2"/>
+                            <text x="142" y="262" text-anchor="middle" font-family="Unbounded, Manrope, sans-serif" font-weight="800" font-size="150" fill="#fff">S</text>
+                            <path class="bag-swoosh" pathLength="1" d="M6 238 C 40 330, 210 345, 292 128" fill="none" stroke="url(#gSwoosh)" stroke-width="15" stroke-linecap="round"/>
+                        </svg>
+
+                        <svg class="spark spark-1" viewBox="0 0 24 24"><path d="M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z" fill="#FF8A12"/></svg>
+                        <svg class="spark spark-2" viewBox="0 0 24 24"><path d="M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z" fill="#FFA10A"/></svg>
+                        <svg class="spark spark-3" viewBox="0 0 24 24"><path d="M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z" fill="#F51E6B"/></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Perks ticker -->
+    <div class="ticker" aria-label="Store perks">
+        <div class="ticker-track">
+            <div class="ticker-group">
+                <span><i class="fas fa-truck-fast"></i> Free shipping on orders of ₹1,000+</span>
+                <span><i class="fas fa-rotate-left"></i> Easy returns</span>
+                <span><i class="fas fa-money-bill-wave"></i> Cash on delivery</span>
+                <span><i class="fas fa-lock"></i> Secure checkout</span>
+                <span><i class="fas fa-tags"></i> New deals every week</span>
+            </div>
+            <div class="ticker-group" aria-hidden="true">
+                <span><i class="fas fa-truck-fast"></i> Free shipping on orders of ₹1,000+</span>
+                <span><i class="fas fa-rotate-left"></i> Easy returns</span>
+                <span><i class="fas fa-money-bill-wave"></i> Cash on delivery</span>
+                <span><i class="fas fa-lock"></i> Secure checkout</span>
+                <span><i class="fas fa-tags"></i> New deals every week</span>
+            </div>
         </div>
     </div>
 
     <!-- Main Content -->
-    <div class="main-container">
-        <!-- Sidebar Filters -->
-        <aside class="sidebar">
+    <div class="main-container" id="products">
+        <aside class="sidebar" aria-label="Filters">
             <div class="filter-section">
                 <h3><i class="fas fa-filter"></i> Filters</h3>
-                
+
                 <div class="filter-group">
-                    <h4>Price Range</h4>
+                    <h4>Price range</h4>
                     <div class="price-filter">
-                        <input type="range" id="priceRange" min="0" max="50000" step="1000" value="50000">
+                        <input type="range" id="priceRange" min="0" max="150000" step="1000" value="150000" aria-label="Maximum price">
                         <div class="price-values">
                             <span>₹0</span>
-                            <span>₹<span id="priceValue">50000</span>+</span>
+                            <span id="priceValue">₹1,50,000+</span>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="filter-group">
                     <h4>Rating</h4>
                     <div class="rating-filter">
-                        <label><input type="checkbox" value="4"> ★★★★☆ & above</label>
-                        <label><input type="checkbox" value="3"> ★★★☆☆ & above</label>
-                        <label><input type="checkbox" value="2"> ★★☆☆☆ & above</label>
+                        <label><input type="checkbox" value="4"> ★★★★☆ &amp; above</label>
+                        <label><input type="checkbox" value="3"> ★★★☆☆ &amp; above</label>
+                        <label><input type="checkbox" value="2"> ★★☆☆☆ &amp; above</label>
                     </div>
                 </div>
-                
+
                 <div class="filter-group">
                     <h4>Availability</h4>
-                    <label><input type="checkbox" id="inStockOnly"> In Stock Only</label>
+                    <label><input type="checkbox" id="inStockOnly"> In stock only</label>
                 </div>
-                
-                <button class="clear-filters" onclick="clearFilters()">Clear All Filters</button>
+
+                <button type="button" class="clear-filters" onclick="clearFilters()">Clear all filters</button>
             </div>
         </aside>
 
-        <!-- Products Grid -->
         <main class="products-main">
             <div class="products-header">
-                <h2 id="categoryTitle">All Products</h2>
+                <div>
+                    <h2 id="categoryTitle">All Products</h2>
+                    <p class="result-count" id="resultCount" aria-live="polite"></p>
+                </div>
                 <div class="sort-options">
-                    <label>Sort by:</label>
+                    <label for="sortSelect">Sort by</label>
                     <select id="sortSelect">
                         <option value="default">Default</option>
                         <option value="priceLow">Price: Low to High</option>
@@ -129,94 +251,76 @@
                     </select>
                 </div>
             </div>
-            
+
             <div id="productsContainer" class="products-grid"></div>
-            <div id="loadingSpinner" class="loading-spinner" style="display: none;">
-                <i class="fas fa-spinner fa-spin"></i> Loading...
-            </div>
         </main>
     </div>
 
+    <!-- Dim backdrop behind cart / wishlist -->
+    <div id="overlay" class="overlay" onclick="closePanels()"></div>
+
     <!-- Cart Sidebar -->
-    <div id="cartSidebar" class="cart-sidebar">
+    <aside id="cartSidebar" class="cart-sidebar" aria-label="Cart">
         <div class="cart-header">
             <h3><i class="fas fa-shopping-cart"></i> Your Cart</h3>
-            <button class="close-cart" onclick="toggleCart()">✕</button>
+            <button type="button" class="close-cart" onclick="closePanels()" aria-label="Close cart">✕</button>
         </div>
         <div id="cartItems" class="cart-items"></div>
         <div class="cart-footer">
+            <div class="ship-progress">
+                <div class="ship-text" id="shipText"></div>
+                <div class="ship-bar"><span id="shipFill"></span></div>
+            </div>
             <div class="cart-summary">
                 <div class="summary-row">
-                    <span>Subtotal:</span>
+                    <span>Subtotal</span>
                     <span id="cartSubtotal">₹0</span>
                 </div>
                 <div class="summary-row">
-                    <span>Shipping:</span>
+                    <span>Shipping</span>
                     <span id="shippingCost">Free</span>
                 </div>
                 <div class="summary-row total">
-                    <span>Total:</span>
+                    <span>Total</span>
                     <span id="cartTotal">₹0</span>
                 </div>
             </div>
-            <button id="checkoutBtn" class="checkout-btn" onclick="showCheckout()">
-                Proceed to Checkout
+            <button id="checkoutBtn" type="button" class="checkout-btn" onclick="showCheckout()">
+                Proceed to checkout
             </button>
         </div>
-    </div>
+    </aside>
 
     <!-- Wishlist Sidebar -->
-    <div id="wishlistSidebar" class="wishlist-sidebar">
+    <aside id="wishlistSidebar" class="wishlist-sidebar" aria-label="Wishlist">
         <div class="cart-header">
             <h3><i class="fas fa-heart"></i> Wishlist</h3>
-            <button class="close-cart" onclick="toggleWishlist()">✕</button>
+            <button type="button" class="close-cart" onclick="closePanels()" aria-label="Close wishlist">✕</button>
         </div>
         <div id="wishlistItems" class="cart-items"></div>
-    </div>
-
-    <!-- User Menu -->
-    <div id="userMenu" class="user-menu">
-        <div class="user-info" id="userInfo">
-            <i class="fas fa-user-circle"></i>
-            <div>
-                <strong id="userName">Guest User</strong>
-                <p id="userEmail">guest@example.com</p>
-            </div>
-        </div>
-        <div class="menu-items">
-            <div class="menu-item" onclick="showOrders()">
-                <i class="fas fa-box"></i> My Orders
-            </div>
-            <div class="menu-item" onclick="showAddressBook()">
-                <i class="fas fa-map-marker-alt"></i> Address Book
-            </div>
-            <div class="menu-item" onclick="toggleLoginModal()">
-                <i class="fas fa-sign-in-alt"></i> Login / Sign Up
-            </div>
-        </div>
-    </div>
+    </aside>
 
     <!-- Checkout Modal -->
-    <div id="checkoutModal" class="modal">
+    <div id="checkoutModal" class="modal" role="dialog" aria-modal="true" aria-label="Checkout">
         <div class="modal-content modal-large">
-            <span class="close" onclick="closeModal()">&times;</span>
+            <button type="button" class="close" onclick="closeModal()" aria-label="Close checkout">&times;</button>
             <h2>Checkout</h2>
-            
+
             <div class="checkout-container">
                 <div class="checkout-section">
-                    <h3>Shipping Information</h3>
-                    <form id="shippingForm">
-                        <input type="text" placeholder="Full Name" id="fullName" required>
-                        <input type="email" placeholder="Email Address" id="email" required>
-                        <input type="tel" placeholder="Phone Number" id="phone" required>
-                        <textarea placeholder="Complete Address" id="address" rows="3" required></textarea>
-                        <input type="text" placeholder="City" id="city" required>
-                        <input type="text" placeholder="Postal Code" id="postalCode" required>
+                    <h3>Shipping information</h3>
+                    <form id="shippingForm" onsubmit="return false;">
+                        <input type="text" placeholder="Full Name" id="fullName" autocomplete="name" required>
+                        <input type="email" placeholder="Email Address" id="email" autocomplete="email" required>
+                        <input type="tel" placeholder="Phone Number" id="phone" autocomplete="tel" required>
+                        <textarea placeholder="Complete Address" id="address" rows="3" autocomplete="street-address" required></textarea>
+                        <input type="text" placeholder="City" id="city" autocomplete="address-level2" required>
+                        <input type="text" placeholder="Postal Code" id="postalCode" autocomplete="postal-code" required>
                     </form>
                 </div>
-                
+
                 <div class="checkout-section">
-                    <h3>Payment Method</h3>
+                    <h3>Payment method</h3>
                     <div class="payment-methods">
                         <label class="payment-option">
                             <input type="radio" name="payment" value="credit" checked>
@@ -231,66 +335,92 @@
                             <i class="fas fa-money-bill-wave"></i> Cash on Delivery
                         </label>
                     </div>
-                    
+
                     <div id="creditCardFields" class="payment-fields">
-                        <input type="text" placeholder="Card Number" id="cardNumber">
+                        <input type="text" placeholder="Card Number" id="cardNumber" inputmode="numeric" autocomplete="cc-number">
                         <div class="card-details">
-                            <input type="text" placeholder="MM/YY" id="cardExpiry">
-                            <input type="text" placeholder="CVV" id="cvv">
+                            <input type="text" placeholder="MM/YY" id="cardExpiry" autocomplete="cc-exp">
+                            <input type="text" placeholder="CVV" id="cvv" autocomplete="cc-csc">
                         </div>
                     </div>
-                    
+
                     <div id="paypalFields" class="payment-fields" style="display:none;">
                         <input type="email" placeholder="PayPal Email" id="paypalEmail">
                     </div>
-                    
-                    <h3>Order Summary</h3>
+
+                    <h3>Order summary</h3>
                     <div id="checkoutSummary" class="checkout-summary"></div>
-                    
-                    <button class="confirm-order" onclick="placeOrder()">
-                        Place Order <i class="fas fa-arrow-right"></i>
+
+                    <button type="button" class="confirm-order" onclick="placeOrder()">
+                        Place order
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Order confirmed -->
+    <div id="successModal" class="modal" role="dialog" aria-modal="true" aria-label="Order confirmed">
+        <div class="modal-content modal-small success-card">
+            <svg class="check" viewBox="0 0 52 52" aria-hidden="true">
+                <circle class="check-circle" cx="26" cy="26" r="24"/>
+                <path class="check-mark" d="M14 27 L22 35 L38 18"/>
+            </svg>
+            <h2>Order confirmed</h2>
+            <p id="successText"></p>
+            <button type="button" class="confirm-order" onclick="closeSuccess()">Keep shopping</button>
+        </div>
+    </div>
+
     <!-- Login Modal -->
-    <div id="loginModal" class="modal">
+    <div id="loginModal" class="modal" role="dialog" aria-modal="true" aria-label="Login or sign up">
         <div class="modal-content">
-            <span class="close" onclick="closeLoginModal()">&times;</span>
+            <button type="button" class="close" onclick="closeLoginModal()" aria-label="Close">&times;</button>
             <h2>Login / Sign Up</h2>
             <div class="login-tabs">
-                <button class="tab-btn active" onclick="switchTab('login')">Login</button>
-                <button class="tab-btn" onclick="switchTab('signup')">Sign Up</button>
+                <button type="button" class="tab-btn active" onclick="switchTab('login')">Login</button>
+                <button type="button" class="tab-btn" onclick="switchTab('signup')">Sign Up</button>
             </div>
-            
+
             <div id="loginForm" class="login-form active">
-                <input type="email" placeholder="Email" id="loginEmail">
-                <input type="password" placeholder="Password" id="loginPassword">
-                <button onclick="login()">Login</button>
+                <input type="email" placeholder="Email" id="loginEmail" autocomplete="email">
+                <input type="password" placeholder="Password" id="loginPassword" autocomplete="current-password">
+                <button type="button" onclick="login()">Login</button>
             </div>
-            
+
             <div id="signupForm" class="login-form">
-                <input type="text" placeholder="Full Name" id="signupName">
-                <input type="email" placeholder="Email" id="signupEmail">
-                <input type="password" placeholder="Password" id="signupPassword">
-                <button onclick="signup()">Sign Up</button>
+                <input type="text" placeholder="Full Name" id="signupName" autocomplete="name">
+                <input type="email" placeholder="Email" id="signupEmail" autocomplete="email">
+                <input type="password" placeholder="Password" id="signupPassword" autocomplete="new-password">
+                <button type="button" onclick="signup()">Sign Up</button>
             </div>
         </div>
     </div>
 
     <!-- Orders Modal -->
-    <div id="ordersModal" class="modal">
+    <div id="ordersModal" class="modal" role="dialog" aria-modal="true" aria-label="My orders">
         <div class="modal-content modal-large">
-            <span class="close" onclick="closeOrdersModal()">&times;</span>
+            <button type="button" class="close" onclick="closeOrdersModal()" aria-label="Close orders">&times;</button>
             <h2>My Orders</h2>
             <div id="ordersList" class="orders-list"></div>
         </div>
     </div>
 
-    <!-- Toast Notification -->
-    <div id="toast" class="toast"></div>
+    <!-- Toast -->
+    <div id="toast" class="toast" role="status" aria-live="polite">
+        <i id="toastIcon" class="fas fa-circle-check"></i>
+        <span id="toastMsg"></span>
+        <span class="toast-bar"></span>
+    </div>
+
+    <!-- Back to top with scroll progress ring -->
+    <button type="button" id="toTop" class="to-top" onclick="scrollToTop()" aria-label="Back to top">
+        <svg viewBox="0 0 48 48" aria-hidden="true">
+            <circle class="ring-bg" cx="24" cy="24" r="21"/>
+            <circle class="ring" id="toTopRing" cx="24" cy="24" r="21"/>
+        </svg>
+        <i class="fas fa-arrow-up"></i>
+    </button>
 
     <!-- Footer -->
     <footer class="footer">
@@ -299,10 +429,10 @@
                 <h3>Singora by Abhinaw Singh</h3>
                 <p>Your premium e-commerce destination for quality products at unbeatable prices.</p>
                 <div class="social-icons">
-                    <i class="fab fa-facebook"></i>
-                    <i class="fab fa-twitter"></i>
-                    <i class="fab fa-instagram"></i>
-                    <i class="fab fa-youtube"></i>
+                    <button type="button" class="social-btn" aria-label="Facebook"><i class="fab fa-facebook"></i></button>
+                    <button type="button" class="social-btn" aria-label="Twitter"><i class="fab fa-twitter"></i></button>
+                    <button type="button" class="social-btn" aria-label="Instagram"><i class="fab fa-instagram"></i></button>
+                    <button type="button" class="social-btn" aria-label="YouTube"><i class="fab fa-youtube"></i></button>
                 </div>
             </div>
             <div class="footer-section">
@@ -319,15 +449,15 @@
                 <ul>
                     <li>Track Order</li>
                     <li>Shipping Info</li>
-                    <li>Terms & Conditions</li>
+                    <li>Terms &amp; Conditions</li>
                     <li>Privacy Policy</li>
                 </ul>
             </div>
             <div class="footer-section">
                 <h4>Newsletter</h4>
                 <div class="newsletter">
-                    <input type="email" placeholder="Your email">
-                    <button>Subscribe</button>
+                    <input type="email" id="newsletterEmail" placeholder="Your email" aria-label="Email for newsletter">
+                    <button type="button" onclick="subscribe()">Subscribe</button>
                 </div>
             </div>
         </div>
